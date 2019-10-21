@@ -1,9 +1,6 @@
 package com.leetcode.problems.longestsubstring;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -29,30 +26,34 @@ import java.util.logging.Level;
  */
 public class Solution {
 
+    /**
+     * 不重复字符的最长子串
+     * @param s
+     * @return
+     */
     public int lengthOfLongestSubstring(String s) {
-        String[] t = s.split("");
-        Set<String> ds = new HashSet<String>();//记录每一次循环的不重复最长子串
-        boolean containBlank = false;//是否包含空格字符
-        int curMax = 0;//当前回合的最大子串长度
-        int beforeMax = 0;//已经跑过的回合中的最大子串长度
-        for (int i=1; i< t.length;i++) {
-            //每次记录下最长子串
-            //判断当前字符在缓存的最长字串中是否存在
-            if (ds.contains(t[i]) || (containBlank && Integer.valueOf(t[i].toCharArray()[0]) == 32)) {//说明
-                if (ds.size() > beforeMax) {//说明出现了更长的不重复字串
-                    curMax = ds.size();
-                    beforeMax = curMax;
+        //记录已存在的
+        HashSet<Character> existed = new HashSet<>();
+        char[] chars = s.toCharArray();//
+        int max = 0;
+        int curMax = 0;
+        for (int i=0; i < chars.length; i++) {//每一个的起始字符位置
+            existed.clear();//重新开启
+            curMax = 0;
+            for (int j=i; j < chars.length; j++) {//从起始字符往后遍历，如果出现
+                if (existed.contains(chars[j])) {//出现相同的则说明重复
+                    break;
+                } else {//记录遍历过的字符
+                    existed.add(chars[j]);
+                    curMax++;
                 }
-                ds = new HashSet<String>();//重置
             }
-            if (Integer.valueOf(t[i].toCharArray()[0]) == 32) containBlank = true;
-            ds.add(t[i]);//作为下一回合的起始
-            curMax = ds.size();
+            if (curMax >= max) {
+                max = curMax;
+            }
         }
-        if (beforeMax > curMax) {//少了一次迭代的比较
-            curMax = beforeMax;
-        }
-        return curMax;
+        //找出最大值
+        return max;
     }
 
 

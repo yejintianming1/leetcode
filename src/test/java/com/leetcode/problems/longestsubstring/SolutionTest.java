@@ -29,7 +29,7 @@ public class SolutionTest {
      */
     @Test
     public void testLengthOfLongestSubstring() throws Exception {
-        int max = solution.lengthOfLongestSubstring(" ");
+        int max = solution.lengthOfLongestSubstring2(" ");
         System.out.println(max);
     }
 
